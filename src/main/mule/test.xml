@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="9a9d2ab7-f31c-424d-873f-6e7bbcc0eb6b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="b3d9e237-11f3-4310-9564-0ca333e321fa" >
+		<db:my-sql-connection host="baspucmfqhlvjszckjki-mysql.services.clever-cloud.com" port="3306" user="ulreonxgwxh9c4jj" password="FbTvzqzg77TpOp4hZ8wm" database="baspucmfqhlvjszckjki" />
+	</db:config>
+	<flow name="testFlow" doc:id="d7301fc6-017c-4dca-b727-cb9dac88574f" >
+		<http:listener doc:name="Listener" doc:id="7742a8a9-9176-4ba3-8e3f-69ff884ced55" config-ref="HTTP_Listener_config" path="/test"/>
+		<db:insert doc:id="c4979730-cdc9-467d-8f20-e860eb3c77cb">
+			<db:sql ><![CDATA[INSERT into sanjeet(com_name,roll_no) values (12345,24)]]></db:sql>
+		</db:insert>
+		<db:select doc:name="Select" doc:id="00710367-c176-4b28-be55-95de2c7c6fab">
+			<db:sql ><![CDATA[SELECT * FROM sanjeet]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="e0a55418-cbb7-40cc-a592-0d6545fd6fd1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
